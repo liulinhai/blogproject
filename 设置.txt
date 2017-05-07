@@ -1,0 +1,51 @@
+﻿sudo ln -s /home/ubuntu/blogproject/mysite_nginx.conf /etc/nginx/sites-enabled/
+sudo /etc/init.d/nginx restart
+
+# create a directory for the vassals
+sudo mkdir /etc/uwsgi
+sudo mkdir /etc/uwsgi/vassals
+# symlink from the default config directory to your config file
+sudo ln -s /home/ubuntu/blogproject/blogproject.ini /etc/uwsgi/vassals/
+# run the emperor
+uwsgi --emperor /etc/uwsgi/vassals --uid www-data --gid www-data
+
+ps aux | grep uwsgi
+
+lsof -i :3400
+
+sudo kill -9 pid1 pid2
+
+sudo apt-get --purge remove nginx
+sudo apt-get autoremove
+dpkg --get-selections|grep nginx
+
+sudo apt-get --purge remove nginx-common
+ps -ef |grep nginx
+sudo  find  /  -name  nginx*
+
+sudo apt-get update
+sudo apt-get install nginx
+
+/etc/apt/sources.list
+
+deb http://nginx.org/packages/ubuntu/ trusty nginx
+deb-src http://nginx.org/packages/ubuntu/ trusty nginx
+
+sudo apt-key add nginx_signing.key
+
+apt-get update
+apt-get install nginx
+
+172.31.28.252
+ curl -I -H "Accept_Encoding:gzip,deflate" "http://www.summerdawn.top/media/image_20170429094237.jpeg"
+
+source /home/ubuntu/blog_env/bin/activate
+cd /home/ubuntu/blogproject
+
+deactivate
+
+python3 manage.py makemigrations
+python3 manage.py migrate
+
+
+git config --global http.sslVerify false
