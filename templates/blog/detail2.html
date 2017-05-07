@@ -1,0 +1,63 @@
+{% extends 'blog/base2.html' %}
+{% load blog_tags %}
+{% load static %}
+
+
+ {% block header %}
+
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header" style="background-image: url({% static 'blog/img/home-bg.jpg' %})">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>{{ post.title }}</h1>
+                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }},{% get_view_num  post.id  %} readed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+{% endblock header %}
+{% block main %}
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    {{ post.body|safe }}
+                    <span>Last Modified·{{ post.modified_time }}</span>
+
+                                                 <!-- Pager -->
+                <ul class="pager">
+                    {% if pre_post %}
+                     <li class="previous">
+
+		                <a href="{% url 'blog:detail' pre_post.id  %}">&larr; {{ pre_post.title|striptags|truncatechars:15 }} </a>
+
+                    </li>
+                    {% endif %}
+                    {% if next_post %}
+                    <li class="next">
+
+                        <a href="{% url 'blog:detail' next_post.id  %}">{{ next_post.title|striptags|truncatechars:15 }} &rarr;</a>
+
+                    </li>
+                    {% endif %}
+                </ul>
+                </div>
+            </div>
+            </div>
+
+
+
+
+    </article>
+
+
+    <hr>
+
+
+
+{% endblock main %}

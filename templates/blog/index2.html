@@ -1,0 +1,61 @@
+{% extends 'blog/base2.html' %}
+{% load blog_tags %}
+{% load staticfiles %}
+
+               {% block header %}
+
+                <header class="intro-header" style="background-image:url({% static 'blog/img/home-bg.jpg' %})">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                                <div class="site-heading">
+                                    <h1>Summer·Dawn</h1>
+                                    <hr class="small">
+                                    <span class="subheading">A  Blog For Record Life by  SummerDawn</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+               {% endblock header %}
+{% block main %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+						{% for post in post_list %}
+                <div class="post-preview">
+                    <a href="{{ post.get_absolute_url }}">
+                        <h2 class="post-title">
+                           {{ post.title }}
+                        </h2>
+                        <h3 class="post-subtitle">
+                            {{post.excerpt|default:post.body|striptags|safe|truncatechars:100}}
+                        </h3>
+                    </a>
+                    <p class="post-meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }},{% get_view_num  post.id  %} readed，{% get_view_n post %} readed again</p>
+                </div>
+                <hr>
+
+
+						{% empty %}
+						<div class="post-preview">暂时还没有发布文章！</div>
+						{% endfor %}
+
+                                <!-- Pager -->
+                <ul class="pager">
+                     {% if post_list.has_previous %}
+                    <li class="previous">
+                        <a href="?page={{ post_list.previous_page_number }}" >  &larr; Newer Posts </a>
+                    </li>
+                    {% endif %}
+
+                    {% if post_list.has_next %}
+                    <li class="next">
+                         <a href="?page={{ post_list.next_page_number }}" >Older Posts &rarr;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock main %}

@@ -1,0 +1,81 @@
+{% extends 'blog/base.html' %}
+{% load blog_tags %}
+
+{% block main %}
+						{% for post in post_list %}
+						<article class="post post-1">
+							<header class="entry-header">
+								<h1 class="entry-title">
+									<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+								</h1>
+								<div class="entry-meta">
+									<span class="post-category"><a href="{% url 'blog:categoryn' post.category.name %}">{{ post.category.name }} </a></span>
+			
+									<span class="post-date"><a href="{% url 'blog:archives' post.created_time.year post.created_time.month %}"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
+			
+									<span class="post-author"><a href="{% url 'blog:author' post.author %}">{{ post.author }}</a></span>
+                                    <span class="post-author">阅读({% get_view_num  post.id  %})</span>
+
+								</div>
+							</header>
+							<div class="entry-content clearfix">
+								<p>{{post.excerpt|default:post.body|striptags|safe|truncatechars:100}}</p>
+								<div class="read-more cl-effect-14">
+									<a href="{{ post.get_absolute_url }}" class="more-link">继续阅读<span class="meta-nav">→</span></a>
+								</div>
+							</div>
+						</article>
+
+						{% empty %}
+						<div class="no-post">暂时还没有发布文章！</div>
+						{% endfor %}
+{% endblock main %}
+
+{% block paginations %}
+	{% if pages.num_pages > 1 %}
+	<div style="text-align:center">
+        <ul class="pagination">
+    {# 上一页，这里需要用到has_previous方法判断是否有上一页 #}
+    <li>
+        {% if post_list.has_previous %}
+            <a href="?page={{ post_list.previous_page_number }}" aria-label="Previous">
+            {% else %}
+            <a href="?page={{ post_list.number }} " aria-label="Previous">
+            {% endif %}
+
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+    </li>
+
+    {# 遍历所有页码 #}
+    {% for page in pages.page_range %}
+        <li><a href="?page={{ page }}">{{ page }}</a></li>
+    {% endfor %}
+
+    {# 下一页，这里需要用到has_next方法判断是否有下一页 #}
+    <li>
+        {% if post_list.has_next %}
+        <a href="?page={{ post_list.next_page_number }}" aria-label="Next">
+            {% else %}
+         <a href="?page={{ post_list.number}}" aria-label="Next">
+            {% endif %}
+
+            <span aria-hidden="true">&raquo;</span>
+        </a>
+    </li>
+</ul>
+        <p> 共{{ pages.count }}篇博文·当前第{{ post_list.number }}页/共{{ pages.num_pages }}页</p>
+    </div>
+
+
+
+
+{% block extra_footer %}
+    {#设置凸显当前的页码#}
+    <script type="text/javascript">
+        $(".pagination li:eq({{ post_list.number}})").addClass("active");
+    </script>
+{% endblock %}
+
+{% endif %}
+{% endblock paginations %}
