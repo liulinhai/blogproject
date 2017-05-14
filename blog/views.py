@@ -81,7 +81,11 @@ def archives(request,year,month):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    return render(request, 'blog/index.html', data )
+    if 'xyz' in request.META['HTTP_HOST']:
+        return render(request, 'blog/index.html', data )
+    else:
+        return render(request, 'blog/index2.html', data)
+    #return render(request, 'blog/index.html', data )
 
 def category(request,pk):
     cate = get_object_or_404(Category,pk=pk)
@@ -92,7 +96,11 @@ def category(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    return render(request, 'blog/index.html', data )
+    if 'xyz' in request.META['HTTP_HOST']:
+        return render(request, 'blog/index.html', data )
+    else:
+        return render(request, 'blog/index2.html', data)
+    #return render(request, 'blog/index.html', data )
 
 def categoryn(request,pk):
     cate = get_object_or_404(Category,name=pk)
@@ -103,7 +111,11 @@ def categoryn(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    return render(request, 'blog/index.html', data )
+    if 'xyz' in request.META['HTTP_HOST']:
+        return render(request, 'blog/index.html', data )
+    else:
+        return render(request, 'blog/index2.html', data)
+    #return render(request, 'blog/index.html', data )
 
 def authors(request,pk):
     author = get_object_or_404(User,username=pk)

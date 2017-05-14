@@ -7,7 +7,7 @@ from django.utils import timezone
 class PostAdmin(admin.ModelAdmin):
     list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category']
     fieldsets = [
-        (None,{'fields':[('title','author'),'body','excerpt']}),
+        (None,{'fields':[('title',),'body','excerpt']}),
         ('Category and Tags',{'fields':['category','tags']})
     ]
     list_per_page = 50
@@ -15,6 +15,22 @@ class PostAdmin(admin.ModelAdmin):
 
     search_fields = ('title',)
     list_filter = ('category','tags')
+
+    save_on_top = True
+
+    def get_queryset(self, request):
+        qs = super(PostAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(author=request.user)
+    def save_model(self, request, obj, form, change):
+        #print(change)
+        #if obj.author == '' :print('空值')
+        if not change :
+            #if obj.author == '' :
+            obj.author = request.user
+
+        super(PostAdmin, self).save_model(request, obj, form, change)
 
     def view_num_count(self,obj):
         return sum(map(lambda x:x.view_nums,obj.view_num.all()))

@@ -112,7 +112,7 @@ class Post(models.Model):
     # 而一个作者可能会写多篇文章，
     # 因此这是一对多的关系，
     # 和 Category 类似。
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User,blank=True, null=True)
     #author = models.OneToOneField(User)
     #read_num = models.PositiveIntegerField('阅读量',default=0)
     view_num = GenericRelation(ViewNum)
