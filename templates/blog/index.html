@@ -79,3 +79,7 @@
 
 {% endif %}
 {% endblock paginations %}
+
+    {% block loginnext %}
+    ·已登录 by <a title="退出登录" href="{%url 'admin:logout' %}?next={%url 'blog:index' %}">{{user.get_username}}</a>
+    {% endblock loginnext %}

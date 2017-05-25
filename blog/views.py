@@ -58,7 +58,7 @@ def detail(request,pk):
     else:
         data['change']=False
     """
-    data['user']=request.user
+    #data['user']=request.user
     data['post']=post
     data['pre_post']=pre_post
     data['next_post']=next_post

@@ -1,5 +1,6 @@
 {% extends 'blog/base.html' %}
 {% load blog_tags %}
+{% load comments %}
 {% block main %}
 	<article class="post post-1">
 		<header class="entry-header">
@@ -51,15 +52,97 @@
 
 {% block uyan %}
 	<section class="comment-area ">
-	  <!-- 把友言评论系统代码放到想让评论框显示的地方 -->
-	  <!-- UY BEGIN -->
-	  <div id="uyan_frame"></div>
-	  <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2131638"></script>
-	  <!-- UY END -->
+
+
+
+
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4>评论列表</h4>
+        </div>
+
+        <div class="panel-body">
+            {% get_comment_list for post as comments %}
+            {% for comment in comments %}
+                <div class="comment-area" name="F{{comment.id}}">
+					<p class="comment_title"><span style="float:right">{{ forloop.counter }}#</span>{{ comment.submit_date|date:"Y-m-d H:i"}} @ {{ comment.user_name }}：</p>
+                    <p class="comment_content">{{ comment.comment|safe }}</p>
+					<hr>
+                </div>
+
+            {% empty %}
+                暂无评论
+            {% endfor %}
+        </div>
+    </div>
+
+
 
 	</section>
 
 {% endblock uyan %}
+
+{% block other %}
+
+
+
+    <div class="comment-area">
+        {% if user.is_authenticated %}
+    {% if user.is_active %}
+          <script src="https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js"></script>
+        <h4>新的评论</h4>
+        {% get_comment_form for post as blog_form %}
+            <form class="form-horizontal" action="{% comment_form_target %}" method="post" id="comment_form">
+        {% csrf_token %}
+
+        {{ blog_form.object_pk }}
+        {{ blog_form.content_type }}
+        {{ blog_form.timestamp }}
+        {{ blog_form.site }}
+        {{ blog_form.submit_date }}
+        {{ blog_form.security_hash }}
+
+
+        <input type="hidden" name="next" value="{%url 'blog:detail' post.id%}"/>
+        <input id="reply_to" type="hidden" name="reply_to" value="0" />
+        <input id="root_id" type="hidden" name="root_id" value="0" />
+        <input id="reply_name" type="hidden" name="reply_name" value="">
+
+
+
+                <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="为了防止垃圾评论，需要登录，才能评论哦~"></textarea>
+                <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'id_comment' );
+                </script>
+
+                <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
+                <input type="text" style="display:none;" id="id_honeypot" name="honeypot">
+
+
+
+
+              <div class="form-actions comment_button" style="float:right;">
+                <span id='tip_text'></span>
+                <input class="btn btn-info" id="submit_btn" type="submit" name="submit" value="提交"/>
+
+              </div>
+
+     </form>
+                                {% else %}
+                    您尚未激活，请先激活您的账户才能评论。(避免垃圾评论)
+                {% endif %}
+                {% else %}
+                  <p style="text-align:center">您尚未登录，请先<a href="{%url 'admin:login' %}?next={{post.get_absolute_url}}">登录</a>才能评论。</p>
+                {% endif %}
+    </div>
+
+
+
+
+{% endblock other %}
 
 {% block jiathis %}
  <!-- JiaThis Button BEGIN -->
@@ -82,3 +165,7 @@ var jiathis_config = {data_track_clickback:'true'};
 <!-- JiaThis Button END -->
 
 {% endblock jiathis %}
+
+{% block loginnext %}
+·已登录 by <a title="退出登录" href="{%url 'admin:logout' %}?next={{post.get_absolute_url}}">{{user.get_username}}</a>
+{% endblock loginnext %}

@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="summerdawn blog">
     <meta name="author" content="liulinhai">
+    <meta property="wb:webmaster" content="a75ae64e33d7a2d6" />
 
 
     <title>SummerDawn</title>
@@ -19,6 +20,8 @@
 
     <!-- Theme CSS -->
    <link href="http://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/css/clean-blog.min.css" rel="stylesheet">
+    <!-- comment Theme CSS -->
+    <!-- link rel="stylesheet" href="{% static 'blog/css/comment.css' %}" -->
 
     <!-- Custom Fonts -->
     <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -83,7 +86,11 @@
                 {% block main %}
                {% endblock main %}
 
+                {% block blog_content %}
+                {% endblock blog_content %}
 
+    {% block other %}
+    {% endblock other %}
 
 
 
@@ -118,7 +125,15 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; SummerDawn·Since 2017</p>
+                    <p class="copyright text-muted">Copyright &copy; SummerDawn·Since 2017
+                        {% if user.is_authenticated %}
+                        {% block loginnext %}
+
+                        {% endblock loginnext %}
+                        {% else %}
+                        <a href="{%url 'admin:login' %}?next={%url 'blog:index' %}">·请登录</a>
+                        {% endif %}
+                    </p>
                 </div>
             </div>
         </div>
