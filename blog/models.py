@@ -29,6 +29,10 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = '类别'
+        verbose_name_plural = '类别集'
+
 @python_2_unicode_compatible
 class Tag(models.Model):
     """
@@ -40,6 +44,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name = '标签'
+        verbose_name_plural = '标签集'
+
 
 @python_2_unicode_compatible
 class ViewNum(models.Model):
@@ -67,7 +76,7 @@ class Post(models.Model):
     # 但对于文章的正文来说可能会是一大段文本，
     # 因此使用 TextField 来存储大段文本。
     #body = models.TextField()
-    body=UEditorField(u'内容',width=600, height=300, toolbars="full", imagePath="%(basename)s_%(datetime)s.%(extname)s")
+    body=UEditorField(u'内容',width=600, height=300, toolbars="mini", imagePath="%(year)s/%(month)s/%(day)s/%(basename)s.%(extname)s")
 
     # 这两个列分表表示了文章的创建时间和最后一次修改时间，
     # 存储时间的列用 DateTimeField。
@@ -126,4 +135,6 @@ class Post(models.Model):
 
     class Meta:
         ordering = [ '-created_time']
+        verbose_name='文章'
+        verbose_name_plural='文集'
 

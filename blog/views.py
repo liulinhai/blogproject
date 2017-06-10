@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from django.http import HttpResponse
-from .models import Post,Category,ViewNum
+from .models import Post,Category,ViewNum,Tag
 from django.contrib.auth.models import User
 from .paginator import getPages
 from django.contrib.contenttypes.models import ContentType
@@ -21,7 +21,7 @@ def index(request):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if 'xyz'  in request.META['HTTP_HOST']:
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -64,7 +64,7 @@ def detail(request,pk):
     data['next_post']=next_post
     #data['view_num']=v[0]
 
-    if 'xyz' in request.META['HTTP_HOST'] :
+    if 'xyz'  in request.META['HTTP_HOST'] :
 
         response = render(request,'blog/detail.html',data)
     else:
@@ -90,6 +90,21 @@ def archives(request,year,month):
 def category(request,pk):
     cate = get_object_or_404(Category,pk=pk)
     post_list = Post.objects.filter(category=cate)
+    data = {}
+    pages, post_list = getPages(request,post_list)
+
+    data['post_list'] = post_list
+    data['pages'] = pages
+
+    if 'xyz' in request.META['HTTP_HOST']:
+        return render(request, 'blog/index.html', data )
+    else:
+        return render(request, 'blog/index2.html', data)
+    #return render(request, 'blog/index.html', data )
+
+def tags(request,pk):
+    cate = get_object_or_404(Tag,pk=pk)
+    post_list = Post.objects.filter(tags=cate)
     data = {}
     pages, post_list = getPages(request,post_list)
 

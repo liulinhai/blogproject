@@ -1,5 +1,5 @@
 from django import template
-from ..models import Post,Category,ViewNum
+from ..models import Post,Category,ViewNum,Tag
 from django.db.models.aggregates import Count
 from django.contrib.contenttypes.models import ContentType
 
@@ -27,3 +27,9 @@ def get_view_num(post_id):
 @register.simple_tag
 def get_view_n(post):
     return sum(map(lambda x:x.view_nums,post.view_num.all()))
+
+@register.simple_tag
+def get_tags():
+    return Tag.objects.annotate(num_posts=Count('post')).filter(num_posts__gt=0)
+
+#.filter(num_posts__gt=0) 大于0.

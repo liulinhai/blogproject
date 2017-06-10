@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 {% load blog_tags %}
-{% load static %}
-<html >
+
+<html>
 
 <head>
 
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="summerdawn blog">
     <meta name="author" content="liulinhai">
     <meta property="wb:webmaster" content="a75ae64e33d7a2d6" />
-
+    {% load staticfiles %}
 
     <title>SummerDawn</title>
 
@@ -49,22 +49,23 @@
                     Menu <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="{% url 'blog:index' %}">SUMMER·DAWN</a>
+                <a class="navbar-brand" href="{% url 'rss' %}" title="订阅此博客"><i class="fa fa-rss" aria-hidden="true"></i></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'blog:index' %}">Home</a>
+                        <a href="{% url 'blog:index' %}" title="访问首页"><i class="fa fa-home" aria-hidden="true"></i>首页</a>
                     </li>
                     <li>
-                        <a href="{% url 'admin:index' %}blog/post/">Admin</a>
+                        <a href="{% url 'admin:index' %}blog/post/" title="后台管理"><i class="fa fa-list" aria-hidden="true"></i>管理</a>
                     </li>
                     <li>
-                        <a href="{% url 'admin:index' %}blog/post/add">Post</a>
+                        <a href="{% url 'admin:index' %}blog/post/add" title="撰写文章"><i class="fa fa-pencil" aria-hidden="true"></i>撰文</a>
                     </li>
                     <li>
-                        <a href="{% url 'blog:contact' %}">Contact</a>
+                        <a href="{% url 'blog:contact' %}" title="联系我们"><i class="fa fa-info" aria-hidden="true"></i> 联系</a>
                     </li>
                 </ul>
             </div>
@@ -127,11 +128,11 @@
                     </ul>
                     <p class="copyright text-muted">Copyright &copy; SummerDawn·Since 2017
                         {% if user.is_authenticated %}
-                        {% block loginnext %}
+                         {% block loginnext %}
 
-                        {% endblock loginnext %}
+                         {% endblock loginnext %}
                         {% else %}
-                        <a href="{%url 'admin:login' %}?next={%url 'blog:index' %}">·请登录</a>
+                        ·请<a href="{%url 'admin:login' %}?next={%url 'blog:index' %}"><i class="fa fa-sign-in fa-border " aria-hidden="true">登录</i></a>
                         {% endif %}
                     </p>
                 </div>

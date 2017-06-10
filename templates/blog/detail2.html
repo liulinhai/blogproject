@@ -13,7 +13,20 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         <h1>{{ post.title }}</h1>
-                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }},{% get_view_num  post.id  %} readed</span>
+                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }},{% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk %} ">{{post.category.name}}</a>
+                        <br><i class="fa fa-tags" aria-hidden="true"></i>
+                            {% for tag in post.tags.all %}
+
+
+
+                                  <a class="label label-default" href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
+
+                                {% empty %}
+                                暂无标签！
+                                {% endfor %}
+
+
+                        </span>
                     </div>
                 </div>
             </div>
@@ -28,6 +41,11 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     {{ post.body|safe }}
                     <span>Last Modified·{{ post.modified_time }}</span>
+                    {% if user.is_authenticated %}
+
+				    <a  href="{% url 'admin:index' %}blog/post/{{ post.pk }}/change"><i class="fa fa-pencil-square-o fa-border" aria-hidden="true">编辑</i></a>
+
+                    {% endif %}
 
                                                  <!-- Pager -->
                 <ul class="pager">
@@ -140,8 +158,10 @@
         <div class="row ">
               <div class="form-actions comment_button" style="float:right;">
                 <span id='tip_text'></span>
-                <input class="btn btn-info" id="submit_btn" type="submit" name="submit" value="提交"/>
-
+                <button class="btn " id="submit_btn" type="submit" name="submit" value="提交" style="font-size: 85%;border: 1px solid #ddd;border-radius: 3px;margin: 15px 15px 0;padding: 5px 10px;">
+                  <i class="fa fa-paper-plane" aria-hidden="true" ></i>
+                    发布
+                </button>
               </div>
         </div>
      </form>
@@ -149,7 +169,7 @@
                     您尚未激活，请先激活您的账户才能评论。(避免垃圾评论)
                 {% endif %}
                 {% else %}
-                    <p style="text-align:center">您尚未登录，请先<a href="{%url 'admin:login' %}?next={{post.get_absolute_url}}">登录</a>才能评论。</p>
+                    <p style="text-align:center">您尚未登录，请先<a href="{%url 'admin:login' %}?next={{post.get_absolute_url}}"><i class="fa fa-sign-in fa-border " aria-hidden="true">登录</i></a>才能评论。</p>
                 {% endif %}
     </div>
 
@@ -161,6 +181,6 @@
 
 {% endblock %}
 
-                        {% block loginnext %}
-                        ·已登录 by <a title="退出登录" href="{%url 'admin:logout' %}?next={{post.get_absolute_url}}">{{user.get_username}}</a>
-                        {% endblock loginnext %}
+                         {% block loginnext %}
+                        ·已登录 by {{user.get_username}}· <a title="退出登录" href="{%url 'admin:logout' %}?next={{post.get_absolute_url}}" ><i class="fa fa-sign-out fa-border " aria-hidden="true">登出</i></a>
+                         {% endblock loginnext %}

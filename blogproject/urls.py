@@ -16,12 +16,15 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 #from DjangoUeditor import urls as DjangoUeditor_urls
+from blog.feeds import AllPostsRssFeed
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'',include('blog.urls')),
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
     url(r'^comments/', include('django_comments.urls')),
+    url(r'^all/rss/$', AllPostsRssFeed(), name='rss'),
+
     # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
 ]
