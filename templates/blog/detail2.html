@@ -122,7 +122,8 @@
     <div class="comments_nav">
         {% if user.is_authenticated %}
     {% if user.is_active %}
-          <script src="https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
         <h4>新的评论</h4>
         {% get_comment_form for post as blog_form %}
             <form class="form-horizontal" action="{% comment_form_target %}" method="post" id="comment_form">
@@ -148,7 +149,13 @@
                 <script>
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.
-                CKEDITOR.replace( 'id_comment' );
+                CKEDITOR.replace( 'id_comment' , {
+                    language: 'zh-cn',
+                    // uiColor: '#9AB8F3',
+                    removePlugins : 'elementspath,save,font,allyhelp,about,basicstyles,blockquote,div,flash,iframe,table,tabletools,language,bidi,print,scayt,forms,find,clipboard,copyformatting,contextmenu,entities,floatingspace,format,preview,maximize,horizontalrule,htmlwriter,indentlist,sourcearea,pastetext,pastefromword,list,magicline,newpage,undo,pagebreak,selectall,showborders,stylescombo,wsc,templates',
+                    removeButtons : 'Cut,Copy,Italic,Underline,Subscript,Superscript,JustifyBlock,Anchor'
+
+                });
                 </script>
 
                 <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
