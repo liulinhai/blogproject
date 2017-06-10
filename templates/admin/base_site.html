@@ -5,5 +5,8 @@
 {% block branding %}
 <h1 id="site-name"><a href="{% url 'admin:index' %}">SUMMER·DAWN</a></h1>
 {% endblock %}
-
+{% block extrahead %}
+<script>window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';</script>
+{{ block.super }}
+{% endblock %}
 {% block nav-global %}{% endblock %}

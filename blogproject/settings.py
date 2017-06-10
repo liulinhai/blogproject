@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3q^p@e5hiqvqfhsi^62lx02cmf=%)39u!v$kypi$nig#_jd81f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['www.summerdawn.top','www.summerdawn.xyz','summerdawn.top','summerdawn.xyz','127.0.0.1']
 
@@ -40,10 +40,27 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_comments',
     'blog',
-    'DjangoUeditor',
+    'ckeditor',
+    'ckeditor_uploader',
+    #'DjangoUeditor',
     ]
 SITE_ID = 1
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_BROWSE_SHOW_DIRS=True
+CKEDITOR_RESTRICT_BY_DATE=True
+#CKEDITOR_FILENAME_GENERATOR =
+
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+CKEDITOR_CONFIGS = {
+    'awesome_ckeditor': {
+        #'toolbar': 'Basic',
+        'language' : 'zh-cn',
+
+
+},
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -136,11 +153,11 @@ QINIU_ACCESS_KEY= 'XT39KsbPcEzDOoYwCOhLlmyK5Sznf2Pc074_fjZA'
 QINIU_SECRET_KEY= 'FsUOEr7KdQs7PdKXPW_H2s-V1UiS4sCX9YB9fMhD'
 QINIU_BUCKET_NAME= 'summerdawn'
 QINIU_BUCKET_DOMAIN= 'oox9jbpeq.bkt.clouddn.com'
-#DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuMediaStorage'
+DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuMediaStorage'
 
 PREFIX_URL = 'http://'
 
-MEDIA_URL = PREFIX_URL + QINIU_BUCKET_DOMAIN + '/'
+#MEDIA_URL = PREFIX_URL + QINIU_BUCKET_DOMAIN + '/media/'
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 #DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuMediaStorage'
@@ -152,5 +169,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "common_static"),)
 
 # upload folder
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

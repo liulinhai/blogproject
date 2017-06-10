@@ -21,10 +21,10 @@ from blog.feeds import AllPostsRssFeed
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'',include('blog.urls')),
-    url(r'^ueditor/',include('DjangoUeditor.urls' )),
+    #url(r'^ueditor/',include('DjangoUeditor.urls' )),
     url(r'^comments/', include('django_comments.urls')),
     url(r'^all/rss/$', AllPostsRssFeed(), name='rss'),
 
-    # url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
 ]

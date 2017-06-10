@@ -2,10 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.six import python_2_unicode_compatible
 from django.urls import reverse
-from DjangoUeditor.models import UEditorField
+#from DjangoUeditor.models import UEditorField
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey,GenericRelation
-
+from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
 @python_2_unicode_compatible
 class Category(models.Model):
@@ -76,8 +76,8 @@ class Post(models.Model):
     # 但对于文章的正文来说可能会是一大段文本，
     # 因此使用 TextField 来存储大段文本。
     #body = models.TextField()
-    body=UEditorField(u'内容',width=600, height=300, toolbars="mini", imagePath="%(year)s/%(month)s/%(day)s/%(basename)s.%(extname)s")
-
+    #body=UEditorField(u'内容',width=600, height=300, toolbars="mini", imagePath="%(year)s/%(month)s/%(day)s/%(basename)s.%(extname)s")
+    body = RichTextUploadingField(u'内容', config_name='awesome_ckeditor')
     # 这两个列分表表示了文章的创建时间和最后一次修改时间，
     # 存储时间的列用 DateTimeField。
     created_time = models.DateTimeField('发表时间',auto_now_add=True)
