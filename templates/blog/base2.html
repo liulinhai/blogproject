@@ -22,6 +22,7 @@
    <link href="http://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/css/clean-blog.min.css" rel="stylesheet">
     <!-- comment Theme CSS -->
     <!-- link rel="stylesheet" href="{% static 'blog/css/comment.css' %}" -->
+    <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles/github.css' %}">
 
     <!-- Custom Fonts -->
     <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
@@ -151,6 +152,13 @@
 
     <!-- Theme JavaScript -->
     <script src="http://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/js/clean-blog.min.js"></script>
+
+    	<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+		<script src="//cdn.bootcss.com/highlightjs-line-numbers.js/1.1.0/highlightjs-line-numbers.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script>hljs.initLineNumbersOnLoad();</script>
+		<script src="{% static 'blog/js/script.js' %}"></script>
+
 		<script>
 	 	$(document).ready(function() {
 	 	//高亮代码

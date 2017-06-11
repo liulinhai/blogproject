@@ -15,7 +15,10 @@
 		<link rel="stylesheet" href="http://cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
 		<link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
 	    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
-        <link rel="stylesheet" href="{% static 'blog/css/prettify.css' %}">
+		<link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles/github.css' %}">
+
+
+        <!--link rel="stylesheet" href="{% static 'blog/css/prettify.css' %}"-->
 
 
 	    <!-- js -->
@@ -24,7 +27,7 @@
 
 	    <script src="{% static 'blog/js/pace.min.js' %}"></script>
 	    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
-		<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+
 	</head>
 
 	<body>
@@ -127,6 +130,18 @@
 								{% endfor %}
 							</ul>
 						</div>
+
+						<div class="widget ">
+							<h3 class="widget-title">标签云</h3>
+							{% get_tags as tag_list %}
+
+								{% for tag in tag_list %}
+
+									<a class="label label-default"  href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}({{tag.num_posts}})</a>
+
+								{% endfor %}
+
+						</div>
 					</aside>
 				</div>
 			</div>
@@ -161,12 +176,16 @@
 				</ul>
 			</nav>
 		</div>
-
+		<script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+		<script src="//cdn.bootcss.com/highlightjs-line-numbers.js/1.1.0/highlightjs-line-numbers.min.js"></script>
+		<script>hljs.initLineNumbersOnLoad();</script>
 		<script src="{% static 'blog/js/script.js' %}"></script>
+
 		<script>
 	 	$(document).ready(function() {
 	 	//高亮代码
- 		$(".entry-content pre").addClass("prettyprint linenums ");
+ 		//$(".entry-content pre").addClass("prettyprint linenums ");
 		//图片缩放
 		$(".entry-content img").addClass("img-responsive");
 			});

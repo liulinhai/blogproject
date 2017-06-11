@@ -1,4 +1,5 @@
 {% extends 'blog/base.html' %}
+
 {% load blog_tags %}
 {% load comments %}
 {% block main %}
@@ -11,7 +12,15 @@
 				<span class="post-date"><a href="#"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
 
 				<span class="post-author"><a href="{% url 'blog:author' post.author %}">{{ post.author }}</a></span>
-				<span class="post-author">阅读({% get_view_num  post.id  %})</span>
+				<span >阅读({% get_view_num  post.id  %})</span>
+				<br>
+				<span>
+				{% for tag in post.tags.all %}
+				  <a title="访问该标签下所有文章" href="{% url 'blog:tag' tag.pk %}" class="label label-default">{{ tag.name }}</a>
+				{% empty %}
+				暂无标签！
+				{% endfor %}
+				</span>
 			</div>
 		</header>
 		<div class="entry-content clearfix">
@@ -90,7 +99,7 @@
     <div class="comment-area">
         {% if user.is_authenticated %}
     {% if user.is_active %}
-          <script src="https://cdn.bootcss.com/ckeditor/4.6.2/ckeditor.js"></script>
+
         <h4>新的评论</h4>
         {% get_comment_form for post as blog_form %}
             <form class="form-horizontal" action="{% comment_form_target %}" method="post" id="comment_form">
@@ -112,11 +121,25 @@
 
 
                 <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="为了防止垃圾评论，需要登录，才能评论哦~"></textarea>
-                <script>
-                // Replace the <textarea id="editor1"> with a CKEditor
-                // instance, using default configuration.
-                CKEDITOR.replace( 'id_comment' );
-                </script>
+				{% load static %}
+				<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+        		<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+				<script>
+					var config = {
+					    'image_previewText' : ' ',
+						extraPlugins: 'codesnippet',
+						codeSnippet_theme: 'github',
+						'toolbar': 'Custom',
+						'toolbar_Custom':[
+						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+						['Link', 'Unlink', 'Anchor'],
+						['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
+						['TextColor', 'BGColor'],
+						['Smiley', 'SpecialChar'], ['Source'],
+							]
+							}
+					CKEDITOR.replace( 'id_comment', config );
+				</script>
 
                 <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
                 <input type="text" style="display:none;" id="id_honeypot" name="honeypot">

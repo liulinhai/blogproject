@@ -14,7 +14,16 @@
 									<span class="post-date"><a href="{% url 'blog:archives' post.created_time.year post.created_time.month %}"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
 			
 									<span class="post-author"><a href="{% url 'blog:author' post.author %}">{{ post.author }}</a></span>
-                                    <span class="post-author">阅读({% get_view_num  post.id  %})</span>
+                                    <span >阅读({% get_view_num  post.id  %})</span>
+                                    <br>
+                                    <span>
+                                    {% for tag in post.tags.all %}
+                                      <a title="访问该标签下所有文章" href="{% url 'blog:tag' tag.pk %}" class="label label-default">{{ tag.name }}</a>
+                                    {% empty %}
+                                    暂无标签！
+                                    {% endfor %}
+                                    </span>
+                    </p>
 
 								</div>
 							</header>

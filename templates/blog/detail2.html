@@ -122,6 +122,7 @@
     <div class="comments_nav">
         {% if user.is_authenticated %}
     {% if user.is_active %}
+
         <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
         <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
         <h4>新的评论</h4>
@@ -145,18 +146,21 @@
         <div class="row">
             <div class="col-lg-12 col-md-12 ">
                 <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="为了防止垃圾评论，需要登录，才能评论哦~"></textarea>
-
-                <script>
-                // Replace the <textarea id="editor1"> with a CKEditor
-                // instance, using default configuration.
-                CKEDITOR.replace( 'id_comment' , {
-                    language: 'zh-cn',
-                    // uiColor: '#9AB8F3',
-                    removePlugins : 'elementspath,save,font,allyhelp,about,basicstyles,blockquote,div,flash,iframe,table,tabletools,language,bidi,print,scayt,forms,find,clipboard,copyformatting,contextmenu,entities,floatingspace,format,preview,maximize,horizontalrule,htmlwriter,indentlist,sourcearea,pastetext,pastefromword,list,magicline,newpage,undo,pagebreak,selectall,showborders,stylescombo,wsc,templates',
-                    removeButtons : 'Cut,Copy,Italic,Underline,Subscript,Superscript,JustifyBlock,Anchor'
-
-                });
-                </script>
+				<script>
+					var config = {
+						extraPlugins: 'codesnippet',
+						codeSnippet_theme: 'github',
+						'toolbar': 'Custom',
+						'toolbar_Custom':[
+						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+						['Link', 'Unlink', 'Anchor'],
+						['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
+						['TextColor', 'BGColor'],
+						['Smiley', 'SpecialChar'], ['Source'],
+							]
+							}
+					CKEDITOR.replace( 'id_comment', config );
+				</script>
 
                 <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
                 <input type="text" style="display:none;" id="id_honeypot" name="honeypot">

@@ -12,16 +12,16 @@ from django.db.models import Count
 
 def index(request):
 
-    #post_list = Post.objects.all()
+    post_list = Post.objects.all()
 
-    post_list=Post.objects.annotate(Count('view_num'))#只是取到对象，不能取到对象对应的字段
+    #post_list=Post.objects.annotate(Count('view_num'))#只是取到对象，不能取到对象对应的字段
     data = {}
     pages, post_list = getPages(request,post_list)
 
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz'  in request.META['HTTP_HOST']:
+    if 'xyz' in request.META['HTTP_HOST']:
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -64,7 +64,7 @@ def detail(request,pk):
     data['next_post']=next_post
     #data['view_num']=v[0]
 
-    if 'xyz'  in request.META['HTTP_HOST'] :
+    if 'xyz' in request.META['HTTP_HOST'] :
 
         response = render(request,'blog/detail.html',data)
     else:

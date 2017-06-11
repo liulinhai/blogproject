@@ -55,12 +55,31 @@ CKEDITOR_RESTRICT_BY_DATE=True
 CKEDITOR_IMAGE_BACKEND = 'pillow'
 CKEDITOR_CONFIGS = {
     'awesome_ckeditor': {
+
         #'toolbar': 'Basic',
         'language' : 'zh-cn',
+        'image_previewText' : ' ',
+        'codeSnippet_theme' : 'github',
+        'toolbar': 'Custom',
+        'toolbar_Custom':[
+
+        ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+
+        ['Link', 'Unlink', 'Anchor'],
+
+        ['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
+
+        ['TextColor', 'BGColor'],
+
+        ['Smiley', 'SpecialChar'], ['Source'],
+
+    ]
 
 
 },
 }
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
