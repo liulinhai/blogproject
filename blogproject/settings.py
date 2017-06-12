@@ -67,14 +67,14 @@ CKEDITOR_CONFIGS = {
 
         ['Link', 'Unlink', 'Anchor','-', 'RemoveFormat'],
 
-        ['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
+        ['Image', 'Flash', 'Html5video','Table', 'HorizontalRule','CodeSnippet'],
 
         ['TextColor', 'BGColor'],
 
-        ['Subscript', 'Superscript', '-', 'HorizontalRule','Smiley', 'SpecialChar'], ['Source','Preview','Maximize'],['PasteFromWord','PasteText',],
+        ['Subscript', 'Superscript', '-', 'HorizontalRule','Smiley', 'SpecialChar','Mathjax'], ['Source','Preview','Maximize'],['PasteFromWord','PasteText',],
         [ 'Undo', 'Redo'],
     ],
-    'extra_plugins':['codesnippet','widget','lineutils','widgetselection'],
+
 
 
 },
