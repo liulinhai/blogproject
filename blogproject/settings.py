@@ -75,7 +75,7 @@ CKEDITOR_CONFIGS = {
         [ 'Undo', 'Redo'],
     ],
 
-
+        'extraPlugins':','.join(['codesnippet','widget','lineutils','widgetselection','mathjax','html5video']),
 
 },
 }

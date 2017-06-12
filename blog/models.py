@@ -77,7 +77,7 @@ class Post(models.Model):
     # 因此使用 TextField 来存储大段文本。
     #body = models.TextField()
     #body=UEditorField(u'内容',width=600, height=300, toolbars="mini", imagePath="%(year)s/%(month)s/%(day)s/%(basename)s.%(extname)s")
-    body = RichTextUploadingField(u'内容', config_name='awesome_ckeditor',extra_plugins=['codesnippet','widget','lineutils','widgetselection','mathjax','html5video'])
+    body = RichTextUploadingField(u'内容', config_name='awesome_ckeditor')
     # 这两个列分表表示了文章的创建时间和最后一次修改时间，
     # 存储时间的列用 DateTimeField。
     created_time = models.DateTimeField('发表时间',auto_now_add=True)
