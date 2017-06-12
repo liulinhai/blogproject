@@ -1,11 +1,14 @@
 from django.contrib import admin
 from .models import Post,Category,Tag,ViewNum
 from django.utils import timezone
+from django.utils.html import format_html
+from django.core.urlresolvers import reverse
 # Register your models here.
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category']
+    list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category','preview']
+    list_display_links = ('title','author','created_time' )
     fieldsets = [
         (None,{'fields':[('title',),'body','excerpt']}),
         ('Category and Tags',{'fields':['category','tags']})
@@ -41,6 +44,15 @@ class PostAdmin(admin.ModelAdmin):
         return str(( timezone.now() - timezone.timedelta(hours=1)-obj.created_time).days)+ '天前'
     was_published_recently.short_description = '发表距今'
     #was_published_recently.boolean = True
+    was_published_recently.admin_order_field = 'created_time'
+
+    def preview(self,obj):
+        url = reverse('blog:detail', kwargs={'pk': obj.pk})
+
+        return format_html(
+            '<a href="{0}">浏览</a>',url,
+        )
+    preview.short_description = '站点浏览'
 
 class ViewNumsAdmin(admin.ModelAdmin):
     list_display = ('content_type','object_id','view_nums')

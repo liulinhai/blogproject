@@ -16,7 +16,7 @@
 		<link rel="stylesheet" href="{% static 'blog/css/pace.css' %}">
 	    <link rel="stylesheet" href="{% static 'blog/css/custom.css' %}">
 		<link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles/github.css' %}">
-
+		<link rel="stylesheet" href="{% static 'blog/css/special.css' %}" type="text/css" >
 
         <!--link rel="stylesheet" href="{% static 'blog/css/prettify.css' %}"-->
 
@@ -27,6 +27,7 @@
 
 	    <script src="{% static 'blog/js/pace.min.js' %}"></script>
 	    <script src="{% static 'blog/js/modernizr.custom.js' %}"></script>
+		<script src="{% static 'blog/js/sucaijiayuan.js' %}"></script>
 
 	</head>
 
@@ -193,6 +194,9 @@
 
 	{% block extra_footer %}
 	{% endblock extra_footer %}
-
+	<div style="display: none;" id="rocket-to-top">
+	<div style="opacity:0;display: block;" class="level-2"></div>
+	<div class="level-3"></div>
+	</div>
 	</body>
 </html>

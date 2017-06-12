@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3q^p@e5hiqvqfhsi^62lx02cmf=%)39u!v$kypi$nig#_jd81f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['www.summerdawn.top','www.summerdawn.xyz','summerdawn.top','summerdawn.xyz','127.0.0.1']
 
@@ -63,17 +63,18 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         'toolbar_Custom':[
 
-        ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+        ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
 
-        ['Link', 'Unlink', 'Anchor'],
+        ['Link', 'Unlink', 'Anchor','-', 'RemoveFormat'],
 
         ['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
 
         ['TextColor', 'BGColor'],
 
-        ['Smiley', 'SpecialChar'], ['Source'],
-
-    ]
+        ['Subscript', 'Superscript', '-', 'HorizontalRule','Smiley', 'SpecialChar'], ['Source','Preview','Maximize'],['PasteFromWord','PasteText',],
+        [ 'Undo', 'Redo'],
+    ],
+    'extra_plugins':['codesnippet','widget','lineutils','widgetselection'],
 
 
 },

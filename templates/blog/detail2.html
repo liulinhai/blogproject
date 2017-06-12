@@ -13,7 +13,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         <h1>{{ post.title }}</h1>
-                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }},{% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk %} ">{{post.category.name}}</a>
+                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }} <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk %} ">{{post.category.name}}</a>
                         <br><i class="fa fa-tags" aria-hidden="true"></i>
                             {% for tag in post.tags.all %}
 
@@ -148,13 +148,14 @@
                 <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="为了防止垃圾评论，需要登录，才能评论哦~"></textarea>
 				<script>
 					var config = {
+					    'image_previewText' : ' ',
 						extraPlugins: 'codesnippet',
 						codeSnippet_theme: 'github',
 						'toolbar': 'Custom',
 						'toolbar_Custom':[
 						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
 						['Link', 'Unlink', 'Anchor'],
-						['Image', 'Flash', 'Table', 'HorizontalRule','CodeSnippet'],
+						['Image', 'Table', 'HorizontalRule','CodeSnippet'],
 						['TextColor', 'BGColor'],
 						['Smiley', 'SpecialChar'], ['Source'],
 							]
