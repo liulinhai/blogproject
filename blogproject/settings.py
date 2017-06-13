@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3q^p@e5hiqvqfhsi^62lx02cmf=%)39u!v$kypi$nig#_jd81f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['www.summerdawn.top','www.summerdawn.xyz','summerdawn.top','summerdawn.xyz','127.0.0.1']
 
@@ -59,23 +59,25 @@ CKEDITOR_CONFIGS = {
         #'toolbar': 'Basic',
         'language' : 'zh-cn',
         'image_previewText' : ' ',
+        'mathJaxLib':'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',
         'codeSnippet_theme' : 'github',
         'toolbar': 'Custom',
         'toolbar_Custom':[
 
-        ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker','-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+        ['Styles', 'Format', '-','Bold', 'Italic', 'Underline', 'Strike','Blockquote', 'SpellChecker'],
+        [ 'Outdent', 'Indent', '-','JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
 
-        ['Link', 'Unlink', 'Anchor','-', 'RemoveFormat'],
+        ['Link', 'Unlink', 'Anchor',],
 
         ['Image', 'Flash', 'Html5video','Table', 'HorizontalRule','CodeSnippet'],
 
         ['TextColor', 'BGColor'],
 
-        ['Subscript', 'Superscript', '-', 'HorizontalRule','Smiley', 'SpecialChar','Mathjax'], ['Source','Preview','Maximize'],['PasteFromWord','PasteText',],
+        ['Subscript', 'Superscript', '-','NumberedList', 'BulletedList', '-','Emojione', 'SpecialChar','Mathjax'], [ 'RemoveFormat''-','Source','Preview','Maximize'],['PasteFromWord','PasteText','CreateDiv'],
         [ 'Undo', 'Redo'],
     ],
 
-        'extraPlugins':','.join(['codesnippet','widget','lineutils','widgetselection','mathjax','html5video']),
+        'extraPlugins':','.join(['codesnippet','widget','lineutils','widgetselection','mathjax','html5video','tableresize','emojione']),
 
 },
 }
