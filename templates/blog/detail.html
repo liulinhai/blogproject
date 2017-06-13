@@ -129,13 +129,16 @@
 					    'image_previewText' : ' ',
 						extraPlugins: 'codesnippet',
 						codeSnippet_theme: 'github',
+						'toolbarCanCollapse': true,
+						'toolbarLocation' : 'bottom',
+						'toolbarStartupExpanded' : false ,
 						'toolbar': 'Custom',
 						'toolbar_Custom':[
-						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'SpellChecker', 'Undo', 'Redo'],
+						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
 						['Link', 'Unlink', 'Anchor'],
 						['Image', 'Table', 'HorizontalRule','CodeSnippet'],
 						['TextColor', 'BGColor'],
-						['Smiley', 'SpecialChar'], ['Source'],
+						['Smiley', 'SpecialChar'], ['Undo', 'Redo','Source'],
 							]
 							}
 					CKEDITOR.replace( 'id_comment', config );
