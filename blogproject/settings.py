@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3q^p@e5hiqvqfhsi^62lx02cmf=%)39u!v$kypi$nig#_jd81f'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['www.summerdawn.top','www.summerdawn.xyz','summerdawn.top','summerdawn.xyz','127.0.0.1']
 
@@ -60,7 +60,10 @@ CKEDITOR_CONFIGS = {
         'language' : 'zh-cn',
         'image_previewText' : ' ',
         'mathJaxLib':'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML',
+        #'embed_provider' : '//iframe.ly/api/oembed?url={url}&callback={callback}&api_key=[4e359d3e39c3b8a9fcb303]',
         'codeSnippet_theme' : 'github',
+        'toolbarCanCollapse': True,
+
         'toolbar': 'Custom',
         'toolbar_Custom':[
 
@@ -69,15 +72,16 @@ CKEDITOR_CONFIGS = {
 
         ['Link', 'Unlink', 'Anchor',],
 
-        ['Image', 'Flash', 'Html5video','Table', 'HorizontalRule','CodeSnippet'],
+        ['Image', 'Flash', 'Html5video','Embed','Table', 'HorizontalRule','CodeSnippet'],
 
         ['TextColor', 'BGColor'],
 
-        ['Subscript', 'Superscript', '-','NumberedList', 'BulletedList', '-','Emojione', 'SpecialChar','Mathjax'], [ 'RemoveFormat''-','Source','Preview','Maximize'],['PasteFromWord','PasteText','CreateDiv'],
+        ['Subscript', 'Superscript', '-','NumberedList', 'BulletedList', '-','Emojione', 'SpecialChar','Mathjax'],
+        [ 'RemoveFormat''-','Source','Preview','Maximize'],['PasteFromWord','PasteText','Paste','CreateDiv'],
         [ 'Undo', 'Redo'],
     ],
 
-        'extraPlugins':','.join(['codesnippet','widget','lineutils','widgetselection','mathjax','html5video','tableresize','emojione']),
+        'extraPlugins':','.join(['codesnippet','widget','lineutils','widgetselection','mathjax','html5video','tableresize','emojione','embed']),
 
 },
 }

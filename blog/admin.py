@@ -10,8 +10,13 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category','preview']
     list_display_links = ('title','author','created_time' )
     fieldsets = [
-        (None,{'fields':[('title',),'body','excerpt']}),
-        ('Category and Tags',{'fields':['category','tags']})
+        (None,{'fields':[('title',),'body',]}),
+        ('Category and Tags',{'fields':['category','tags']}),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('excerpt', ),
+        }),
+
     ]
     list_per_page = 50
     filter_horizontal = ('tags',)
@@ -41,7 +46,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
     def was_published_recently(self,obj):
-        return str(( timezone.now() - timezone.timedelta(hours=1)-obj.created_time).days)+ '天前'
+        return str(( timezone.now() - timezone.timedelta(hours=0)-obj.created_time).days)+ '天前'
     was_published_recently.short_description = '发表距今'
     #was_published_recently.boolean = True
     was_published_recently.admin_order_field = 'created_time'

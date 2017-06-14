@@ -69,7 +69,7 @@ class Post(models.Model):
     """
 
     # 文章标题
-    title = models.CharField(max_length=70)
+    title = models.CharField('标题',max_length=70)
 
     # 文章正文，我们使用了 TextField。
     # 比较短的字符串存储可以使用 CharField，
@@ -87,7 +87,7 @@ class Post(models.Model):
     # 但默认情况下 CharField 要求我们必须存入数据，
     # 否则就会报错。
     # 指定 blank=True 后就可以允许空值了。
-    excerpt = models.CharField(max_length=200, blank=True)
+    excerpt = models.CharField('摘要',max_length=200, blank=True)
 
     # 这是分类与标签，
     # 分类与标签的模型我们已经定义在上面。
@@ -108,8 +108,8 @@ class Post(models.Model):
     # 请看教程中的解释，
     # 亦可参考官方文档：
     # https://docs.djangoproject.com/en/1.10/topics/db/models/#relationships
-    category = models.ForeignKey(Category)
-    tags = models.ManyToManyField(Tag, blank=True)
+    category = models.ForeignKey(Category,verbose_name='类别')
+    tags = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
     # 文章作者
     # 这里 User 是从 django.contrib.auth.models 导入的。
@@ -121,7 +121,7 @@ class Post(models.Model):
     # 而一个作者可能会写多篇文章，
     # 因此这是一对多的关系，
     # 和 Category 类似。
-    author = models.ForeignKey(User,blank=True, null=True)
+    author = models.ForeignKey(User,verbose_name='作者',blank=True, null=True)
     #author = models.OneToOneField(User)
     #read_num = models.PositiveIntegerField('阅读量',default=0)
     view_num = GenericRelation(ViewNum)
