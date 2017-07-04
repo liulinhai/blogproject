@@ -115,7 +115,7 @@ class Post(models.Model):
     # 请看教程中的解释，
     # 亦可参考官方文档：
     # https://docs.djangoproject.com/en/1.10/topics/db/models/#relationships
-    category = models.ForeignKey(Category,verbose_name='类别',blank=True)
+    category = models.ForeignKey(Category,verbose_name='类别',blank=True,null=True)
     tags = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
     # 文章作者

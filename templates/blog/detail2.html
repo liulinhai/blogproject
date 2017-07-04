@@ -13,7 +13,7 @@
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
                         <h1>{{ post.title }}</h1>
-                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }} <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk %} ">{{post.category.name}}</a>
+                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }}  <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk|default:0 %} ">{{post.category.name}}</a>
                         <br><i class="fa fa-tags" aria-hidden="true"></i>
                             {% for tag in post.tags.all %}
 
@@ -152,15 +152,14 @@
 						extraPlugins: 'codesnippet',
 						codeSnippet_theme: 'github',
 						'toolbarCanCollapse': true,
-						'toolbarLocation' : 'bottom',
+						//'toolbarLocation' : 'bottom',
 						'toolbarStartupExpanded' : false ,
 						'toolbar': 'Custom',
 						'toolbar_Custom':[
-						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
+						['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
 						['Link', 'Unlink', 'Anchor'],
 						['Image', 'Table', 'HorizontalRule','CodeSnippet'],
-						['TextColor', 'BGColor'],
-						['Smiley', 'SpecialChar'], ['Undo', 'Redo','Source'],
+						['Smiley', 'SpecialChar'], ['Undo', 'Redo','-','Source','Maximize'],
 							]
 							}
 					CKEDITOR.replace( 'id_comment', config );

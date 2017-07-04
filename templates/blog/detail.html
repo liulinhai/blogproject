@@ -7,7 +7,7 @@
 		<header class="entry-header">
 			<h1 class="entry-title">{{ post.title }}</h1>
 			<div class="entry-meta">
-				<span class="post-category"><a href="{% url 'blog:categoryn' post.category.name %}">{{ post.category.name }}</a></span>
+				<span class="post-category"><a href="{% url 'blog:category' post.category.pk|default:0 %}">{{ post.category.name }}</a></span>
 
 				<span class="post-date"><a href="#"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
 
@@ -130,15 +130,15 @@
 						extraPlugins: 'codesnippet',
 						codeSnippet_theme: 'github',
 						'toolbarCanCollapse': true,
-						'toolbarLocation' : 'bottom',
+						//'toolbarLocation' : 'bottom',
 						'toolbarStartupExpanded' : false ,
 						'toolbar': 'Custom',
 						'toolbar_Custom':[
-						['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
+						['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
 						['Link', 'Unlink', 'Anchor'],
 						['Image', 'Table', 'HorizontalRule','CodeSnippet'],
-						['TextColor', 'BGColor'],
-						['Smiley', 'SpecialChar'], ['Undo', 'Redo','Source'],
+
+						['Smiley', 'SpecialChar'], ['Undo', 'Redo','-','Source','Maximize'],
 							]
 							}
 					CKEDITOR.replace( 'id_comment', config );

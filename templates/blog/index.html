@@ -9,7 +9,7 @@
 									<a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
 								</h1>
 								<div class="entry-meta">
-									<span class="post-category"><a href="{% url 'blog:categoryn' post.category.name %}">{{ post.category.name }} </a></span>
+									<span class="post-category"><a href="{% url 'blog:category' post.category.pk|default:0 %}">{{ post.category.name }} </a></span>
 			
 									<span class="post-date"><a href="{% url 'blog:archives' post.created_time.year post.created_time.month %}"><time class="entry-date" datetime="{{ post.created_time }}">{{ post.created_time }}</time></a></span>
 			
