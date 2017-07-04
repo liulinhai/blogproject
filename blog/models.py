@@ -7,6 +7,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey,GenericRelation
 from ckeditor_uploader.fields import RichTextUploadingField
 # Create your models here.
+STATUS_CHOICES = (
+    ('d', '草稿'),
+    ('p', '已发布'),
+    ('w', '已撤回'),
+)
+
 @python_2_unicode_compatible
 class Category(models.Model):
     """
@@ -24,7 +30,7 @@ class Category(models.Model):
     django 内置的类型全部类型可查看文档：
     https://docs.djangoproject.com/en/1.10/ref/models/fields/#field-types
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
 
     def __str__(self):
         return self.name
@@ -40,7 +46,7 @@ class Tag(models.Model):
     和 Category 一样。
     再次强调一定要继承 models.Model 类！
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=20,unique=True)
 
     def __str__(self):
         return self.name
@@ -69,7 +75,7 @@ class Post(models.Model):
     """
 
     # 文章标题
-    title = models.CharField('标题',max_length=70)
+    title = models.CharField('标题',max_length=70,unique=True)
 
     # 文章正文，我们使用了 TextField。
     # 比较短的字符串存储可以使用 CharField，
@@ -88,7 +94,8 @@ class Post(models.Model):
     # 否则就会报错。
     # 指定 blank=True 后就可以允许空值了。
     excerpt = models.CharField('摘要',max_length=200, blank=True)
-
+    status = models.CharField('状态',max_length=1, choices=STATUS_CHOICES,default='d')
+    #('d', 'Draft'), ('p', 'Published'), ('w', 'Withdrawn')
     # 这是分类与标签，
     # 分类与标签的模型我们已经定义在上面。
     # 我们在这里把文章对应的数据库表和分类与标签对应的表关联起来，
@@ -108,7 +115,7 @@ class Post(models.Model):
     # 请看教程中的解释，
     # 亦可参考官方文档：
     # https://docs.djangoproject.com/en/1.10/topics/db/models/#relationships
-    category = models.ForeignKey(Category,verbose_name='类别')
+    category = models.ForeignKey(Category,verbose_name='类别',blank=True)
     tags = models.ManyToManyField(Tag, verbose_name='标签',blank=True)
 
     # 文章作者

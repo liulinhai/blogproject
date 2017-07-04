@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category','preview']
+    list_display = ['title','author','created_time','was_published_recently','view_num_count','modified_time','category','status','preview']
     list_display_links = ('title','author','created_time' )
     fieldsets = [
         (None,{'fields':[('title',),'body',]}),
@@ -16,10 +16,26 @@ class PostAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': ('excerpt', ),
         }),
-
     ]
     list_per_page = 50
     filter_horizontal = ('tags',)
+    def make_published(self, request, queryset):
+        rows_updated = queryset.update(status='p')
+        if rows_updated == 1:
+            message_bit = "1 post was"
+        else:
+            message_bit = "%s posts were" % rows_updated
+        self.message_user(request, "%s successfully marked public." % message_bit)
+    make_published.short_description = '公开发布'
+    def make_withdrawn(self, request, queryset):
+        rows_updated = queryset.update(status='w')
+        if rows_updated == 1:
+            message_bit = "1 post was"
+        else:
+            message_bit = "%s posts were" % rows_updated
+        self.message_user(request, "%s successfully marked private." % message_bit)
+    make_withdrawn.short_description = '仅个人可见'
+    actions = [make_published,make_withdrawn]
 
     search_fields = ('title',)
     list_filter = ('category','tags')
@@ -63,6 +79,8 @@ class ViewNumsAdmin(admin.ModelAdmin):
     list_display = ('content_type','object_id','view_nums')
 
 admin.site.register(Post,PostAdmin)
+
+
 admin.site.register(Category)
 admin.site.register(Tag)
 admin.site.register(ViewNum,ViewNumsAdmin)

@@ -4,7 +4,7 @@ from .models import Post,Category,ViewNum,Tag
 from django.contrib.auth.models import User
 from .paginator import getPages
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Count
+from django.db.models import Count,Q
 
 #import markdown
 # Create your views here.
@@ -12,7 +12,9 @@ from django.db.models import Count
 
 def index(request):
 
-    post_list = Post.objects.all()
+    post_list = Post.objects.filter(status='p')
+    if request.user.is_authenticated:
+        post_list=Post.objects.filter(Q(author=request.user)|Q(status='p'))
 
     #post_list=Post.objects.annotate(Count('view_num'))#只是取到对象，不能取到对象对应的字段
     data = {}
@@ -27,8 +29,11 @@ def index(request):
         return render(request, 'blog/index2.html', data)
 
 def detail(request,pk):
-    post = get_object_or_404(Post,pk=pk)
-
+    #post = get_object_or_404(Post,pk=pk,status='p')
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post,Q(author=request.user)|Q(status='p'),pk=pk)
+    else:
+        post = get_object_or_404(Post, pk=pk, status='p')
     strs = 'post_%s_readed'% pk
 
     obj_type = ContentType.objects.get_for_model(Post)
@@ -37,19 +42,31 @@ def detail(request,pk):
         v[0].view_nums+=1
         v[0].save()
 
-
+    if request.user.is_authenticated:
     #previous blog
-    pre_post=Post.objects.filter(id__lt=pk).order_by('-id')
-    if pre_post.exists():
-        pre_post=pre_post[0]
-    else:
-        pre_post={}
+        pre_post=Post.objects.filter(Q(author=request.user)|Q(status='p'),id__lt=pk).order_by('-id')
+        if pre_post.exists():
+            pre_post=pre_post[0]
+        else:
+            pre_post={}
 
-    next_post=Post.objects.filter(id__gt=pk)
-    if next_post.exists():
-        next_post=next_post[0]
+        next_post=Post.objects.filter(Q(author=request.user)|Q(status='p'),id__gt=pk)
+        if next_post.exists():
+            next_post=next_post[0]
+        else:
+            next_post={}
     else:
-        next_post={}
+        pre_post = Post.objects.filter(status='p',id__lt=pk).order_by('-id')
+        if pre_post.exists():
+            pre_post = pre_post[0]
+        else:
+            pre_post = {}
+
+        next_post = Post.objects.filter(status='p',id__gt=pk)
+        if next_post.exists():
+            next_post = next_post[0]
+        else:
+            next_post = {}
 
     data = {}
     """
@@ -74,7 +91,7 @@ def detail(request,pk):
     return response
 
 def archives(request,year,month):
-    post_list = Post.objects.filter(created_time__year=year,created_time__month=month)
+    post_list = Post.objects.filter(status='p',created_time__year=year,created_time__month=month)
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -89,7 +106,7 @@ def archives(request,year,month):
 
 def category(request,pk):
     cate = get_object_or_404(Category,pk=pk)
-    post_list = Post.objects.filter(category=cate)
+    post_list = Post.objects.filter(category=cate,status='p')
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -104,7 +121,7 @@ def category(request,pk):
 
 def tags(request,pk):
     cate = get_object_or_404(Tag,pk=pk)
-    post_list = Post.objects.filter(tags=cate)
+    post_list = Post.objects.filter(tags=cate,status='p')
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -119,7 +136,7 @@ def tags(request,pk):
 
 def categoryn(request,pk):
     cate = get_object_or_404(Category,name=pk)
-    post_list = Post.objects.filter(category=cate)
+    post_list = Post.objects.filter(category=cate,status='p')
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -134,7 +151,7 @@ def categoryn(request,pk):
 
 def authors(request,pk):
     author = get_object_or_404(User,username=pk)
-    post_list = Post.objects.filter(author=author)
+    post_list = Post.objects.filter(author=author,status='p')
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -148,7 +165,7 @@ def authors(request,pk):
 
 def search(request):
     str=request.GET['search']
-    post_list = Post.objects.filter(title__icontains=str)
+    post_list = Post.objects.filter(title__icontains=str,status='p')
     data = {}
     pages, post_list = getPages(request,post_list)
 
@@ -167,4 +184,8 @@ def test(request):
 
 
 def contact(request):
-    return render(request,'blog/contact.html')
+    data={}
+    data['allpostnum']= Post.objects.filter(status='p').count()
+    return render(request,'blog/contact.html',data)
+
+

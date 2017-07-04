@@ -1,16 +1,19 @@
 {% extends 'blog/base2.html' %}
 {% load static %}
-
-            {% block header %}
+{% load blog_tags %}
+               {% block header %}
 
                 <header class="intro-header" style="background-image:url({% static 'blog/img/home-bg.jpg' %})">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                                 <div class="site-heading">
-                                    <h1>Summer·Dawn</h1>
+                                    <h1 class="hidden-xs">SUMMER·DAWN</h1>
+                                    <h2 class="visible-xs">SUMMER·DAWN</h2>
                                     <hr class="small">
-                                    <span class="subheading">A  Blog For Record Life by  SummerDawn</span>
+                                    <p class="lead">如果需要，那就现在开始<br>
+                                        如果开始，请从这里出发<br><br>
+                                        ——记录自由而真实的人生</p>
                                 </div>
                             </div>
                         </div>
@@ -20,20 +23,76 @@
 {% block main %}
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-				<div id="phone"  style="text-align:center;display:block;">
-				<address>
-				  <strong>深圳市众海科技有限公司</strong><br>
-							观光路3009号<br>
-							光明新区，深圳<br>
-				  <abbr title="Phone">PH:</abbr> (0755) 23198385
-				</address>
-				<address>
-				  <strong>刘林海</strong><br>
-				  <a href="mailto:#">liulinhai@outlook.com</a>
-				</address>
-				</div>
-                 </div>
+                <div class="col-lg-5 col-lg-offset-2 col-md-6 col-md-offset-1">
+                        <h3 >联系我们</h3>
+                        <div id="phone">
+                        <address>
+                          <p><strong>深圳市众海科技有限公司</strong><br>
+                                    观光路3009号<br>
+                                    光明新区，深圳<br>
+                          <abbr title="Phone">PH:</abbr> (0755) 23198385</p>
+
+                            <p><strong>联系人</strong><br>
+                                刘林海
+                          <a href="mailto:#">liulinhai@outlook.com</a></p>
+                        </address>
+
+                            <p><strong>使用说明 </strong><br>
+                            本网站实行邀请注册，欢迎加入我们！<br>请将意向账户名发至上述邮箱；获得账户后，即可撰文评论，网站操作参<a href="{% url 'blog:detail' 36 %}">SummerDawn网站使用说明</a></p>
+                        </div>
+
+
+
+						<div >
+							<h3>最新文章</h3>
+							{% get_recent_posts as recent_post_list %}
+                            <ol>
+                            {% for post in recent_post_list %}
+                            <li><span class="badge" style="float:right;margin-right: 50px;">新</span>
+                            <a href="{{ post.get_absolute_url }}">{{ post.title|truncatechars:18 }}</a>
+                            </li>
+                            {% endfor %}
+                            </ol>
+                            本站已有公开文章 {{ allpostnum }} 篇。
+						</div>
+                </div>
+                    <aside class="col-md-3">
+						<div >
+							<h3 >归档</h3>
+							{% archives as date_list %}
+							<ul>
+								{% for date in date_list %}
+								<li>
+									<a href="{% url 'blog:archives' date.year date.month %}">{{ date.year }}年 {{ date.month }} 月</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+
+						<div >
+							<h3 >分类</h3>
+							{% get_categories as category_list %}
+							<ul>
+								{% for category in category_list %}
+								<li>
+									<a href="{% url 'blog:category' category.pk %}">{{ category.name }}({{category.num_posts}})</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</div>
+
+						<div >
+							<h3 >标签云</h3>
+							{% get_tags as tag_list %}
+
+								{% for tag in tag_list %}
+
+									<a class="label label-default"  href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}({{tag.num_posts}})</a>
+
+								{% endfor %}
+
+						</div>
+					</aside>
             </div>
         </div>
 
