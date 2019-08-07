@@ -175,8 +175,8 @@ USE_TZ = True
 #QINIU_BUCKET_DOMAIN = 'ooxetgtvz.bkt.clouddn.com'
 #QINIU_SECURE_URL = False      #使用http
 
-QINIU_ACCESS_KEY= 'XT39KsbPcEzDOoYwCOhLlmyK5Sznf2Pc074_fjZA'
-QINIU_SECRET_KEY= 'FsUOEr7KdQs7PdKXPW_H2s-V1UiS4sCX9YB9fMhD'
+QINIU_ACCESS_KEY= 'XT39K...'
+QINIU_SECRET_KEY= 'FsUOE...'
 QINIU_BUCKET_NAME= 'summerdawn'
 QINIU_BUCKET_DOMAIN= 'oox9jbpeq.bkt.clouddn.com'
 DEFAULT_FILE_STORAGE = 'qiniustorage.backends.QiniuMediaStorage'
