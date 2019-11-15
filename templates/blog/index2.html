@@ -4,70 +4,78 @@
 
                {% block header %}
 
-                <header class="intro-header" style="background-image:url({% static 'blog/img/home-bg.jpg' %})">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                                <div class="site-heading">
-                                    <h1 class="hidden-xs">SUMMER·DAWN</h1>
-                                    <h2 class="visible-xs">SUMMER·DAWN</h2>
-                                    <hr class="small">
-                                    <p class="lead">如果需要，那就现在开始<br>
-                                        如果开始，请从这里出发<br><br>
-                                        ——记录自由而真实的人生</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </header>
-               {% endblock header %}
-{% block main %}
+<header class="intro-header" style="background-image:url({% static 'blog/img/home-bg.jpg' %})">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-						{% for post in post_list %}
-                <div class="post-preview">
-                    <a href="{{ post.get_absolute_url }}">
-                        <h2 class="post-title">
-                           {{ post.title }}
-                        </h2>
-                        <h3 class="post-subtitle">
-                            {{post.excerpt|default:post.body|striptags|safe|truncatechars:100}}
-                        </h3>
-                    </a>
-                    <p class="post-meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }} <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} read <br>Classified into <a href="{% url 'blog:category' post.category.pk|default:0 %} ">{{post.category.name}}</a>
-                    <br>Tags Cloud:
-                                {% for tag in post.tags.all %}
-                                  <a  href="{% url 'blog:tag' tag.pk %}" class="label label-default">{{ tag.name }}</a>
-                                {% empty %}
-                                暂无标签！
-                                {% endfor %}
+                <div class="site-heading">
+                    <h1>SUMMER·DAWN</h1>
+                    <hr class="small">
+                    <p class="lead">
+                        如果需要，那就现在开始<br>
+                        如果开始，请从这里出发<br><br>
+                        ——记录自由而真实的人生
                     </p>
                 </div>
-                <hr>
-
-
-						{% empty %}
-						<div class="post-preview">暂时还没有发布文章！</div>
-						{% endfor %}
-
-                                <!-- Pager -->
-                <ul class="pager">
-                     {% if post_list.has_previous %}
-                    <li class="previous">
-                        <a href="?page={{ post_list.previous_page_number }}" >  &larr; Newer Posts </a>
-                    </li>
-                    {% endif %}
-
-                    {% if post_list.has_next %}
-                    <li class="next">
-                         <a href="?page={{ post_list.next_page_number }}" >Older Posts &rarr;</a>
-                    </li>
-                    {% endif %}
-                </ul>
             </div>
         </div>
     </div>
+</header>
+               {% endblock header %}
+{% block main %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {% for post in post_list %}
+            <div class="post-preview">
+                <a href="{{ post.get_absolute_url }}">
+                    <h2 class="post-title">
+                        {{ post.title }}
+                    </h2>
+                    <h3 class="post-subtitle">
+                        {{post.excerpt|default:post.body|striptags|safe|truncatechars:120}}
+                    </h3>
+                </a>
+                <p class="post-meta">
+                    <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> · {{ post.created_time|timesince}}前
+                    <span><i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} </span>
+                    <span><i class="fa fa-comments" aria-hidden="true"></i> {% get_comment_num  post.id  %} </span>
+                    <br>{% if post.category.pk %}<i class="fa fa-folder-o"></i> <a href="{% url 'blog:category' post.category.pk %} ">{{post.category.name}}</a>
+                    &nbsp; {%endif %}
+                    {% if post.tags.all %}
+                    <i class="fa fa-tags"></i>
+                    {% for tag in post.tags.all %}
+                    <a href="{% url 'blog:tag' tag.pk %}" class="label label-default">{{ tag.name }}</a>
+                    {% empty %}
+                    暂无标签！
+                    {% endfor %}
+                    {%endif %}
+                </p>
+            </div>
+            <hr>
+
+
+            {% empty %}
+            <div class="post-preview">暂时还没有发布文章！</div>
+            {% endfor %}
+
+            <!-- Pager -->
+            <ul class="pager">
+                {% if post_list.has_previous %}
+                <li class="previous">
+                    <a href="?page={{ post_list.previous_page_number }}">  &larr; Newer Posts </a>
+                </li>
+                {% endif %}
+
+                {% if post_list.has_next %}
+                <li class="next">
+                    <a href="?page={{ post_list.next_page_number }}">Older Posts &rarr;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock main %}
 
                          {% block loginnext %}

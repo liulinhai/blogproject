@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 {% load blog_tags %}
 
 <html>
@@ -19,27 +19,38 @@
     <title>SummerDawn</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!--link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"-->
+    <link href="https://lib.baomitu.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'blog/css/special.css' %}" type="text/css" >
     <!-- Theme CSS -->
-   <link href="http://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/css/clean-blog.min.css" rel="stylesheet">
+    <!--link href="https://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/css/clean-blog.min.css" rel="stylesheet"-->
+    <link rel="stylesheet" href="{% static 'blog/css/clean-blog.min.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'blog/css/special.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'blog/css/zoom.css' %}" type="text/css">
     <!-- comment Theme CSS -->
     <!-- link rel="stylesheet" href="{% static 'blog/css/comment.css' %}" -->
     <link rel="stylesheet" href="{% static 'ckeditor/ckeditor/plugins/codesnippet/lib/highlight/styles/github.css' %}">
 
     <!-- Custom Fonts -->
-    <link href="http://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
-
+    <!--link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"-->
+    <link href="https://lib.baomitu.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <!--link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'-->
+    <!--link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'-->
+    <link href='https://fonts.loli.net/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.loli.net/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-        <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+        <script src="https://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-     <script src="http://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script>
+    <!--script src="https://cdn.bootcss.com/jquery/2.1.3/jquery.min.js"></script-->
+    <script src="https://lib.baomitu.com/jquery/2.1.3/jquery.min.js"></script>
+    <script>
+     $.ajaxSetup({
+        data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+     });
+    </script>
 </head>
 
 <body>
@@ -72,6 +83,13 @@
                     <li>
                         <a href="{% url 'blog:contact' %}" title="联系我们"><i class="fa fa-info" aria-hidden="true"></i> 联系</a>
                     </li>
+                    <li class="search">
+                        <form id="searchform" action="{% url 'blog:search' %} " accept-charset="UTF-8" method="get">
+                            <input type="search" required name="search" id="search" value="{{search}}" autocomplete="off" placeholder="搜索" class="search-input">
+                            <a class="search-btn" id="search-btn" href="javascript:void(0);"><i class="fa fa-search"></i></a>
+                            <div id="navbar-search-tips"></div>
+                        </form>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -81,19 +99,17 @@
 
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-
-               {% block header %}
-               {% endblock header %}
+    {% block header %}
+    {% endblock header %}
 
 
 
     <!-- Main Content -->
+    {% block main %}
+    {% endblock main %}
 
-                {% block main %}
-               {% endblock main %}
-
-                {% block blog_content %}
-                {% endblock blog_content %}
+    {% block blog_content %}
+    {% endblock blog_content %}
 
     {% block other %}
     {% endblock other %}
@@ -131,14 +147,17 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; SummerDawn·Since 2017
+                    <p class="copyright text-muted">
+                        Copyright &copy; SummerDawn·Since 2017
                         {% if user.is_authenticated %}
-                         {% block loginnext %}
+                        {% block loginnext %}
 
-                         {% endblock loginnext %}
+                        {% endblock loginnext %}
                         {% else %}
                         ·请<a href="{%url 'admin:login' %}?next={%url 'blog:index' %}"><i class="fa fa-sign-in fa-border " aria-hidden="true">登录</i></a>
                         {% endif %}
+                        <br>
+                        粤ICP备18001139号
                     </p>
                 </div>
             </div>
@@ -147,26 +166,34 @@
 
     <!-- jQuery -->
 
-    <script src="{% static 'blog/js/sucaijiayuan.js' %}"></script>
+    <script src="{% static 'blog/js/myscrolltop.js' %}"></script>
+    <script src="{% static 'blog/js/buildCTable.js' %}"></script>
+    <!--script src="https://cdn.bootcss.com/zoom.js/0.0.1/zoom.min.js"></script-->
+    <script src="https://lib.baomitu.com/zoom.js/0.0.1/zoom.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script>
+    <!--script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script-->
+    <script src="https://lib.baomitu.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--script src="https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS_HTML"></script-->
+    <script src="https://lib.baomitu.com/mathjax/2.7.0-beta.0/MathJax.js"></script>
+    <script src="https://lib.baomitu.com/mathjax/2.7.0-beta.0/config/TeX-AMS_HTML.js"></script>
+
     <!-- Contact Form JavaScript -->
-
-
     <!-- Theme JavaScript -->
-    <script src="http://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/js/clean-blog.min.js"></script>
-
-    <script src="//cdn.bootcss.com/highlight.js/9.11.0/highlight.min.js"></script>
-    <script src="//cdn.bootcss.com/highlightjs-line-numbers.js/1.1.0/highlightjs-line-numbers.min.js"></script>
+    <!--script src="https://cdn.bootcss.com/startbootstrap-clean-blog/3.3.7+1/js/clean-blog.min.js"></script-->
+    <script src="{% static 'blog/js/clean-blog.min.js' %}"></script>
+    <!--script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script-->
+    <script src="https://lib.baomitu.com/highlight.js/9.12.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script>hljs.initLineNumbersOnLoad();</script>
+    <script>
+        $(document).ready(function () {
+            $(".row img").addClass("img-responsive");
+        });
+        $("pre code").each(function () {
+            $(this).html("<ul><li>" + $(this).html().replace(/\n/g, "\n</li><li>") + "\n</li></ul>");
+        });
+    </script>
 
-
-	<div style="display: none;" id="rocket-to-top">
-	<div style="opacity:0;display: block;" class="level-2"></div>
-	<div class="level-3"></div>
-	</div>
+    <a id="scrolltop" class="gotop" href="javascript:void(0)" title="返回顶部" style="display: none;"></a>
 </body>
 
 </html>

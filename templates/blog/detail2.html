@@ -5,54 +5,55 @@
 
  {% block header %}
 
-    <!-- Page Header -->
-    <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header" style="background-image: url({% static 'blog/img/home-bg.jpg' %})">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    <div class="post-heading">
-                        <h1>{{ post.title }}</h1>
-                        <span class="meta">Posted by <a href="{% url 'blog:author' post.author %}">{{ post.author }}</a> on {{ post.created_time }}  <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} read<br>Classified into <a href="{% url 'blog:category' post.category.pk|default:0 %} ">{{post.category.name}}</a>
-                        <br><i class="fa fa-tags" aria-hidden="true"></i>
-                            {% for tag in post.tags.all %}
-
-
-
-                                  <a class="label label-default" href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
-
-                                {% empty %}
-                                暂无标签！
-                                {% endfor %}
-
-
-                        </span>
-                    </div>
+<!-- Page Header -->
+<!-- Set your background image for this header on the line below. -->
+<header class="intro-header" style="background-image: url({% static 'blog/img/home-bg.jpg' %})">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <span class="meta">
+                        <i class="fa fa-user"></i><a href="{% url 'blog:author' post.author %}"> {{ post.author }} </a> <i class="fa fa-calendar-o"></i> {{ post.created_time|date:"Y.n.j G:i"}}
+                        <i class="fa fa-eye" aria-hidden="true"></i> {% get_view_num  post.id  %} <i class="fa fa-comments" aria-hidden="true"></i> {% get_comment_num  post.id  %}
+                        <br>{% if post.category.pk %}
+                        <i class="fa fa-folder-o"></i> <a href="{% url 'blog:category' post.category.pk|default:0 %} ">{{post.category.name}} </a>
+                        {%endif %}
+                        {% if post.tags.all %}
+                        <i class="fa fa-tags" aria-hidden="true"></i>
+                        {% for tag in post.tags.all %}
+                        <a class="label label-default" href="{% url 'blog:tag' tag.pk %}">{{ tag.name }}</a>
+                        {% empty %}
+                        暂无标签！
+                        {% endfor %}
+                        {%endif %}
+                    </span>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 {% endblock header %}
 {% block main %}
-    <!-- Post Content -->
-    <article>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    {{ post.body|safe }}
-                    <span>Last Modified·{{ post.modified_time }}</span>
-                    {% if user.is_authenticated %}
+<!-- Post Content -->
+<article id="article_body">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" id="article_body2">
+                {{ post.body|safe }}
+                <span>Last Modified·{{ post.modified_time }}</span>
+                {% if user.is_authenticated %}
 
-				    <a  href="{% url 'admin:index' %}blog/post/{{ post.pk }}/change"><i class="fa fa-pencil-square-o fa-border" aria-hidden="true">编辑</i></a>
+                <a href="{% url 'admin:index' %}blog/post/{{ post.pk }}/change"><i class="fa fa-pencil-square-o fa-border" aria-hidden="true">编辑</i></a>
 
-                    {% endif %}
+                {% endif %}
 
-                                                 <!-- Pager -->
+                <!-- Pager -->
                 <ul class="pager">
                     {% if pre_post %}
-                     <li class="previous">
+                    <li class="previous">
 
-		                <a href="{% url 'blog:detail' pre_post.id  %}">&larr; {{ pre_post.title|striptags|truncatechars:15 }} </a>
+                        <a href="{% url 'blog:detail' pre_post.id  %}">&larr; {{ pre_post.title|striptags|truncatechars:15 }} </a>
 
                     </li>
                     {% endif %}
@@ -64,17 +65,17 @@
                     </li>
                     {% endif %}
                 </ul>
-                </div>
             </div>
-            </div>
+        </div>
+    </div>
 
 
 
 
-    </article>
+</article>
 
 
-    <hr>
+<hr>
 
 
 
@@ -85,117 +86,163 @@
 {% block blog_content %}
 
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h4>评论列表</h4>
-        </div>
-
-        <div class="panel-body">
-            {% get_comment_list for post as comments %}
-            {% for comment in comments %}
-                <div class="blog_comment" name="F{{comment.id}}">
-                    <p class="comment_title"><span style="float:right">{{ forloop.counter }}#</span>{{ comment.submit_date|date:"Y-m-d H:i"}} @ {{ comment.user_name }}：</p>
-                    <p class="comment_content">{{ comment.comment|safe }}</p>
-                    <hr>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a id="jump_to_comment" title="我要评论"><h4>评论列表</h4></a>
                 </div>
 
-            {% empty %}
-                暂无评论
-            {% endfor %}
+                <div class="panel-body">
+                    {% get_comment_list for post as comments %}
+                    {% for comment in comments %}
+                    <div class="blog_comment" name="F{{comment.id}}">
+                        <p class="comment_title">
+                            {{ comment.user_name }}：<span style="float:right">{{ forloop.counter }}#</span>
+                        </p>
+                        <div class="comment_content"> {{ comment.comment|safe }}</div>
+                        <p class="comment_bottom">
+                            <span>{{ comment.submit_date|date:"Y年n月j日 G:i"}}</span>
+                            <span class='reply_button'>
+                                <a href='javascript:void(0);' onclick='reply_click(this);' root='{{comment.id}}' role='{{comment.id}}' base='{{comment.user_name}}'><i class="fa fa-share fa-border" aria-hidden="true">回复</i></a>
+                            </span>
+                        </p>
+
+                        {% if comment.replies %}
+                        <ul class="comment_reply">
+                            {% for reply in comment.replies %}
+                            <li name='F{{ reply.id }}'>
+                                <div class='reply_body'>
+                                    <p>
+                                        {#判断是否回复评论#}
+                                        {% ifequal reply.user_name reply.reply_name %}
+                                        <span class="reply_name">{{reply.user_name}}</span>
+                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                        {% else %}
+                                        <span class="reply_name">{{reply.user_name}}</span>
+                                        <i class="fa fa-share" aria-hidden="true"></i>
+                                        <span class="reply_name">{{reply.reply_name}}</span>
+                                        {% endifequal %}
+                                    </p>
+                                    <div class="reply_content">
+                                        <p>{{ reply.comment }}</p>
+                                    </div>
+                                    <p class="comment_bottom">
+                                        <span>{{reply.submit_date|date:"Y年n月j日 G:i"}}</span>
+                                        <span class='reply_button'>
+                                            <a href='javascript:void(0);' onclick='reply_click(this);' root='{{reply.root_id}}' role='{{reply.id}}' base='{{reply.user_name}}'><i class="fa fa-share fa-border" aria-hidden="true">回复</i></a>
+                                        </span>
+                                    </p>
+                                </div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <hr>
+                    </div>
+
+                    {% empty %}
+                    暂无评论
+                    {% endfor %}
+                </div>
+            </div>
         </div>
     </div>
-                        </div>
-                    </div>
-                </div>
+</div>
 {% endblock %}
 
 {% block other %}
 
+<script>
+    $(function () {
+        //评论提交
+        $('#comment_form').submit(function () {
+            if ($("#id_honeypot").val().length != 0) { alert("Stop!垃圾评论"); return false; };
+            if ($("#id_comment").val().length == 0) { alert("Error:请输入您的评论"); $("#id_comment").focus(); return false; };
 
+            update_comment($('#comment_form').serialize());
+            return false;
+        });
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-    <div class="comments_nav">
-        {% if user.is_authenticated %}
-    {% if user.is_active %}
+        //绑定回复提交事件
+        function update_comment(form_data) {
+            $.ajax({
+                type: "POST",
+                data: form_data,
+                url: "{% comment_form_target %}",
+                cache: false,
+                dataType: "json",
+                success: function (json, textStatus) {
+                    if (json['success']) {
+                        window.location.reload();
+                    } else {
+                        if (json['code'] == 501) {
+                            alert('您尚未登录，请先登录才能评论。');
+                        } else if (json['code'] == 502) {
+                            alert('您尚未激活，请先激活您的账户才能评论。');
+                        } else {
+                            alert('评论出错，请刷新重试\n' + json['message']);
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("评论出错\n请检查是否登录了或者刷新试试\n" + errorThrown);
+                }
+            });
+            return false;
+        };
 
-        <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
-        <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-        <h4>新的评论</h4>
-        {% get_comment_form for post as blog_form %}
-            <form class="form-horizontal" action="{% comment_form_target %}" method="post" id="comment_form">
-        {% csrf_token %}
+    });
+</script>
 
-        {{ blog_form.object_pk }}
-        {{ blog_form.content_type }}
-        {{ blog_form.timestamp }}
-        {{ blog_form.site }}
-        {{ blog_form.submit_date }}
-        {{ blog_form.security_hash }}
-
-
-        <input type="hidden" name="next" value="{%url 'blog:detail' post.id%}"/>
-        <input id="reply_to" type="hidden" name="reply_to" value="0" />
-        <input id="root_id" type="hidden" name="root_id" value="0" />
-        <input id="reply_name" type="hidden" name="reply_name" value="">
-
-        <div class="row">
-            <div class="col-lg-12 col-md-12 ">
-                <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="为了防止垃圾评论，需要登录，才能评论哦~"></textarea>
-				<script>
-					var config = {
-					    'image_previewText' : ' ',
-						extraPlugins: 'codesnippet',
-						codeSnippet_theme: 'github',
-						'toolbarCanCollapse': true,
-						//'toolbarLocation' : 'bottom',
-						'toolbarStartupExpanded' : false ,
-						'toolbar': 'Custom',
-						'toolbar_Custom':[
-						['Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Blockquote'],
-						['Link', 'Unlink', 'Anchor'],
-						['Image', 'Table', 'HorizontalRule','CodeSnippet'],
-						['Smiley', 'SpecialChar'], ['Undo', 'Redo','-','Source','Maximize'],
-							]
-							}
-					CKEDITOR.replace( 'id_comment', config );
-				</script>
-
-                <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
-                <input type="text" style="display:none;" id="id_honeypot" name="honeypot">
+<div class="container">
+    <div class="row">
+        <div id="reply_content" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="comments_nav" id="reply_form">
+                {% if user.is_authenticated %}
+                {% if user.is_active %}
+                <h4>新的评论</h4>
+                {% get_comment_form for post as blog_form %}
+                <form class="form-horizontal" action="#" method="post" id="comment_form">
+                    {% csrf_token %}
+                    {{ blog_form.object_pk }}
+                    {{ blog_form.content_type }}
+                    {{ blog_form.timestamp }}
+                    {{ blog_form.site }}
+                    {{ blog_form.submit_date }}
+                    {{ blog_form.security_hash }}
+                    <input type="hidden" name="next" value="{% url 'blog:detail' post.id %}" />
+                    <input id="reply_to" type="hidden" name="reply_to" value="0" />
+                    <input id="root_id" type="hidden" name="root_id" value="0" />
+                    <input id="reply_name" type="hidden" name="reply_name" value="">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 ">
+                            <textarea class="input-xlarge comment_text" id="id_comment" name="comment" placeholder="方寸之间自有天地，评论之余才华四溢"></textarea>
+                            <!--如果你在该字段中输入任何内容，你的评论就会被视为垃圾评论-->
+                            <input type="text" style="display:none;" id="id_honeypot" name="honeypot">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-actions comment_button" style="float:right;">
+                            <span id='tip_text'></span>
+                            <button class="btn" id="submit_btn" type="submit" name="submit" value="提交">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i>发布
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% else %}
+                您尚未激活，请先激活您的账户才能评论。(避免垃圾评论)
+                {% endif %}
+                {% else %}
+                <p style="text-align:center">您尚未登录，请先<a href="{%url 'admin:login' %}?next={{post.get_absolute_url}}"><i class="fa fa-sign-in fa-border " aria-hidden="true">登录</i></a>才能评论。</p>
+                {% endif %}
             </div>
         </div>
-
-        <div class="row ">
-              <div class="form-actions comment_button" style="float:right;">
-                <span id='tip_text'></span>
-                <button class="btn " id="submit_btn" type="submit" name="submit" value="提交" style="font-size: 85%;border: 1px solid #ddd;border-radius: 3px;margin: 15px 15px 0;padding: 5px 10px;">
-                  <i class="fa fa-paper-plane" aria-hidden="true" ></i>
-                    发布
-                </button>
-              </div>
-        </div>
-     </form>
-                                {% else %}
-                    您尚未激活，请先激活您的账户才能评论。(避免垃圾评论)
-                {% endif %}
-                {% else %}
-                    <p style="text-align:center">您尚未登录，请先<a href="{%url 'admin:login' %}?next={{post.get_absolute_url}}"><i class="fa fa-sign-in fa-border " aria-hidden="true">登录</i></a>才能评论。</p>
-                {% endif %}
     </div>
-
-                      </div>
-                    </div>
-                </div>
-
-
-
+</div>
 {% endblock %}
-
                          {% block loginnext %}
-                        ·已登录 by {{user.get_username}}· <a title="退出登录" href="{%url 'admin:logout' %}?next={{post.get_absolute_url}}" ><i class="fa fa-sign-out fa-border " aria-hidden="true">登出</i></a>
+                        ·已登录 by {{user.get_username}}· <a title="退出登录" href="{%url 'admin:logout' %}?next={{post.get_absolute_url}}"><i class="fa fa-sign-out fa-border " aria-hidden="true">登出</i></a>
                          {% endblock loginnext %}

@@ -8,7 +8,7 @@ from django.db.models import Count,Q
 
 #import markdown
 # Create your views here.
-
+WHICHTEMPLATE= False
 
 def index(request):
 
@@ -23,7 +23,7 @@ def index(request):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz'  in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE :
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -50,7 +50,7 @@ def detail(request,pk):
         else:
             pre_post={}
 
-        next_post=Post.objects.filter(Q(author=request.user)|Q(status='p'),id__gt=pk)
+        next_post=Post.objects.filter(Q(author=request.user)|Q(status='p'),id__gt=pk).order_by('id')
         if next_post.exists():
             next_post=next_post[0]
         else:
@@ -81,7 +81,7 @@ def detail(request,pk):
     data['next_post']=next_post
     #data['view_num']=v[0]
 
-    if 'xyz'  in request.META['HTTP_HOST'] :
+    if WHICHTEMPLATE  :
 
         response = render(request,'blog/detail.html',data)
     else:
@@ -98,7 +98,7 @@ def archives(request,year,month):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE :
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -113,7 +113,7 @@ def category(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE:
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -128,7 +128,7 @@ def tags(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE :
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -143,7 +143,7 @@ def categoryn(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE :
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
@@ -158,21 +158,25 @@ def authors(request,pk):
     data['post_list'] = post_list
     data['pages'] = pages
 
-    if 'xyz' in request.META['HTTP_HOST']:
+    if WHICHTEMPLATE :
         return render(request, 'blog/index.html', data )
     else:
         return render(request, 'blog/index2.html', data)
 
 def search(request):
     str=request.GET['search']
-    post_list = Post.objects.filter(title__icontains=str,status='p')
+    post_list = Post.objects.filter(Q(title__icontains=str,status='p')|Q(body__contains=str,status='p'))
     data = {}
     pages, post_list = getPages(request,post_list)
 
     data['post_list'] = post_list
     data['pages'] = pages
+    data['search']=str
 
-    return render(request, 'blog/index.html', data )
+    if WHICHTEMPLATE :
+        return render(request, 'blog/index.html', data )
+    else:
+        return render(request, 'blog/index2.html', data)
 
 def test(request):
     values = request.META.items()
